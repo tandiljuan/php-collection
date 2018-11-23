@@ -1,0 +1,13 @@
+{
+    "name": "vendor-name/package-name",
+    "description": "PROJECT_DESCRIPTION",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "AUTHOR_NAME",
+            "email": "AUTHOR_EMAIL"
+        }
+    ],
+    "require": {}
+}
