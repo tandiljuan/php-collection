@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # This file:
 #
-#  - Demos BASH3 Boilerplate (change this for your script)
+#  - Script to run commands inside a container
 #
 # Usage:
 #
-#  LOG_LEVEL=7 ./main.sh -f /tmp/x -d (change this for your script)
+#  LOG_LEVEL=7 ./run [COMMAND_IN_CONTAINER]
 #
 # Based on a template by BASH3 Boilerplate v2.3.0
 # http://bash3boilerplate.sh/#authors
@@ -25,6 +25,13 @@ set -o nounset
 set -o pipefail
 # Turn on traces, useful while debugging but commented out by default
 # set -o xtrace
+
+# @see https://stackoverflow.com/a/41559867
+if grep docker /proc/1/cgroup -qa; then
+  __i_am_in_container="1" # true
+else
+  __i_am_in_container="0" # false
+fi
 
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
   __i_am_main_script="0" # false
@@ -50,7 +57,7 @@ __base="$(basename "${__file}" .sh)"
 
 
 # Define the environment variables (and their defaults) that this script depends on
-LOG_LEVEL="${LOG_LEVEL:-6}" # 7 = debug -> 0 = emergency
+LOG_LEVEL="${LOG_LEVEL:-0}" # 7 = debug -> 0 = emergency
 NO_COLOR="${NO_COLOR:-}"    # true = disable color. otherwise autodetected
 
 
@@ -136,20 +143,15 @@ function help () {
 
 # shellcheck disable=SC2015
 [[ "${__usage+x}" ]] || read -r -d '' __usage <<-'EOF' || true # exits non-zero when EOF encountered
-  -f --file  [arg] Filename to process. Required.
-  -t --temp  [arg] Location of tempfile. Default="/tmp/bar"
   -v               Enable verbose mode, print script as it is executed
   -d --debug       Enables debug mode
   -h --help        This page
   -n --no-color    Disable color output
-  -1 --one         Do just one thing
 EOF
 
 # shellcheck disable=SC2015
 [[ "${__helptext+x}" ]] || read -r -d '' __helptext <<-'EOF' || true # exits non-zero when EOF encountered
- This is Bash3 Boilerplate's help text. Feel free to add any description of your
- program or elaborate more on command-line arguments. This section is not
- parsed and will be added as-is to the help.
+ Script that wrap the execution of commands inside a container.
 EOF
 
 # Translate usage string -> getopts arguments, and set $arg_<flag> defaults
@@ -316,6 +318,7 @@ fi
 ##############################################################################
 
 function __b3bp_cleanup_before_exit () {
+  info "EXIT CODE: ${?}"
   info "Cleaning up. Done"
 }
 trap __b3bp_cleanup_before_exit EXIT
@@ -355,39 +358,48 @@ fi
 # help mode
 if [[ "${arg_h:?}" = "1" ]]; then
   # Help exists with code 1
-  help "Help using ${0}"
+  help "Help using ${0} [COMMAND_IN_CONTAINER]"
 fi
 
 
 ### Validation. Error out if the things required for your script are not present
 ##############################################################################
 
-[[ "${arg_f:-}" ]]     || help      "Setting a filename with -f or --file is required"
 [[ "${LOG_LEVEL:-}" ]] || emergency "Cannot continue without LOG_LEVEL. "
 
 
 ### Runtime
 ##############################################################################
 
+info "__i_am_in_container: ${__i_am_in_container}"
 info "__i_am_main_script: ${__i_am_main_script}"
 info "__file: ${__file}"
 info "__dir: ${__dir}"
 info "__base: ${__base}"
-info "OSTYPE: ${OSTYPE}"
 
-info "arg_f: ${arg_f}"
-info "arg_d: ${arg_d}"
-info "arg_v: ${arg_v}"
-info "arg_h: ${arg_h}"
+# Running inside the container
+if [[ "${__i_am_in_container:-0}" = "1" ]]; then
+  "$@"
+  exit
+fi
 
-info "$(echo -e "multiple lines example - line #1\nmultiple lines example - line #2\nimagine logging the output of 'ls -al /path/'")"
+# Check if Docker is installed
+if ! [ -x "$(command -v docker)" ]; then
+  emergency "Docker doesn't seems to be installed."
+  exit 1
+fi
 
-# All of these go to STDERR, so you can use STDOUT for piping machine readable information to other software
-debug "Info useful to developers for debugging the application, not useful during operations."
-info "Normal operational messages - may be harvested for reporting, measuring throughput, etc. - no action required."
-notice "Events that are unusual but not error conditions - might be summarized in an email to developers or admins to spot potential problems - no immediate action required."
-warning "Warning messages, not an error, but indication that an error will occur if action is not taken, e.g. file system 85% full - each item must be resolved within a given time. This is a debug message"
-error "Non-urgent failures, these should be relayed to developers or admins; each item must be resolved within a given time."
-critical "Should be corrected immediately, but indicates failure in a primary system, an example is a loss of a backup ISP connection."
-alert "Should be corrected immediately, therefore notify staff who can fix the problem. An example would be the loss of a primary ISP connection."
-emergency "A \"panic\" condition usually affecting multiple apps/servers/sites. At this level it would usually notify all tech staff on call."
+tty=
+tty -s && tty=--tty
+
+docker run \
+  $tty \
+  --interactive \
+  --rm \
+  --name vendor-name-package-name \
+  --user $(id -u):$(id -g) \
+  --volume /etc/passwd:/etc/passwd:ro \
+  --volume /etc/group:/etc/group:ro \
+  --volume $(pwd):/app \
+  --env 'LOG_LEVEL=0' \
+  composer:1.7.3 /app/run "$@"
