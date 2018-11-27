@@ -21,6 +21,15 @@ To install packages defined in the `composer.json` file, use [`composer install`
 ./run composer install
 ```
 
+To check PHP code against coding standards, use [`php-cs-fixer`](https://github.com/FriendsOfPHP/PHP-CS-Fixer)
+
+```bash
+# Check if a file needs to be fixed
+./run php-cs-fixer fix --dry-run --diff path/to/file.php
+# Fix a file
+./run php-cs-fixer fix path/to/file.php
+```
+
 
 Testing
 -------
