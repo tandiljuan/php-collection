@@ -20,3 +20,34 @@ To install packages defined in the `composer.json` file, use [`composer install`
 ```bash
 ./run composer install
 ```
+
+
+Testing
+-------
+
+Bootstrap [Codeception](https://codeception.com/) test environment. This must be done only once.
+
+```bash
+$ # Bootstrap codeception without the standard suites
+$ ./run codecept bootstrap --empty --namespace 'VendorName\PackageName\Tests'
+```
+
+Create a codeception test suit. This must be done only once per suit.
+
+```bash
+$ # Create `unit` suit (for unit testing)
+$ ./run codecept generate:suite unit
+```
+
+Create a [Cest](https://codeception.com/docs/02-GettingStarted#Writing-a-Sample-Test) class under a given suit. Can create as many _Cest_ classes as needed.
+
+```bash
+$ # Create a new cest `Dummy` under the `unit` suit
+$ ./run codecept generate:cest unit Dummy
+```
+
+After writing the tests, can execute them using the `run` command
+
+```bash
+$ ./run codecept run
+```
