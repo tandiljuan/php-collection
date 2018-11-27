@@ -30,6 +30,15 @@ To check PHP code against coding standards, use [`php-cs-fixer`](https://github.
 ./run php-cs-fixer fix path/to/file.php
 ```
 
+To run PHP REPL interactive shell, use [`php`](http://php.net/manual/en/features.commandline.interactive.php) or [`psysh`](https://psysh.org/)
+
+```bash
+# Using PHP
+./run php -a
+# Using psysh
+./run psysh
+```
+
 
 Testing
 -------
