@@ -383,6 +383,9 @@ if [[ "${__i_am_in_container:-0}" = "1" ]]; then
   if [ "$1" = "composer" ]; then
     shift;
     COMPOSER_HOME=/app/.composer composer "$@"
+  elif [ "$1" = "psysh" ]; then
+    shift;
+    XDG_CONFIG_HOME=/app/.psysh psysh "$@"
   else
     "$@"
   fi
