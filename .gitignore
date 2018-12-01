@@ -16,6 +16,9 @@ composer.phar
 # PHP-CS-Fixer cache file
 .php_cs.cache
 
+# psysh config folder
+.psysh
+
 ### Git ###
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
