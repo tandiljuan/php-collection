@@ -9,5 +9,8 @@
             "email": "AUTHOR_EMAIL"
         }
     ],
-    "require": {}
+    "require": {},
+    "require-dev": {
+        "codeception/codeception": "^2.5"
+    }
 }
