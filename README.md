@@ -3,6 +3,51 @@ Composer Package Boilerplate
 
 This project is meant to reduce common and repetitive steps during a Composer package creation.
 
+Contributions must follow [Symfony Coding Standards](https://symfony.com/doc/current/contributing/code/standards.html).
+
+It's encouraged to read the following documentation:
+
+* [PHP The Right Way](https://phptherightway.com/)
+* [Git Best Practices](http://sethrobertson.github.io/GitBestPractices/)
+
+
+Usage
+-----
+
+1. Clone this project
+
+2. Replace template text
+
+```bash
+find . \
+    -not \( -path ./.git -prune \) \
+    -not \( -path ./.composer -prune \) \
+    -not \( -path ./.psysh -prune \) \
+    -not \( -path ./vendor -prune \) \
+    -type f \
+    -exec \
+        sed -i \
+            -e 's/vendor-name/custom-vendor-name/g' \
+            -e 's/VendorName/CustomVendorName/g' \
+            -e 's/package-name/custom-package-name/g' \
+            -e 's/PackageName/CustomPackageName/g' \
+            -e 's/PROJECT_DESCRIPTION/Custom Project Description/g' \
+            -e 's/AUTHOR_NAME/Custom Author Name/g' \
+            -e 's/AUTHOR_EMAIL/author@email.com/g' \
+            '{}' \
+    \;
+```
+
+Also update this _README_ file.
+
+3. Install dependencies
+
+```bash
+./run composer install
+```
+
+4. Start coding!
+
 
 Development
 -----------
