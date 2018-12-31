@@ -1,4 +1,4 @@
 actor: UnitTester
 modules:
     enabled:
-        - \VendorName\PackageName\Tests\Helper\Unit
+        - \Tandiljuan\Collection\Tests\Helper\Unit

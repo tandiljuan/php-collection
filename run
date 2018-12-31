@@ -405,7 +405,7 @@ docker run \
   $tty \
   --interactive \
   --rm \
-  --name vendor-name-package-name \
+  --name tandiljuan-collection \
   --user $(id -u):$(id -g) \
   --volume /etc/passwd:/etc/passwd:ro \
   --volume /etc/group:/etc/group:ro \
