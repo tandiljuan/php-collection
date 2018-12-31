@@ -1,15 +1,24 @@
 {
-    "name": "vendor-name/package-name",
-    "description": "PROJECT_DESCRIPTION",
+    "name": "tandiljuan/collection",
+    "description": "PHP library to create custom collections",
     "type": "library",
+    "keywords": [
+        "array",
+        "collection",
+        "hash",
+        "list"
+    ],
+    "homepage": "https://github.com/tandiljuan/php-collection",
     "license": "MIT",
     "authors": [
         {
-            "name": "AUTHOR_NAME",
-            "email": "AUTHOR_EMAIL"
+            "name": "Juan Manuel Lopez",
+            "role": "Developer"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=5.4.0"
+    },
     "require-dev": {
         "codeception/codeception": "^2.5",
         "friendsofphp/php-cs-fixer": "^2.13",

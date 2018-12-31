@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\PackageName\Tests;
+namespace Tandiljuan\Collection\Tests;
 
 /**
  * Inherited Methods.

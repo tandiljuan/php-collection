@@ -1,4 +1,4 @@
-namespace: VendorName\PackageName\Tests
+namespace: Tandiljuan\Collection\Tests
 paths:
     tests: tests
     output: tests/_output
