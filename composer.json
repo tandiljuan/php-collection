@@ -12,6 +12,7 @@
     "require": {},
     "require-dev": {
         "codeception/codeception": "^2.5",
-        "friendsofphp/php-cs-fixer": "^2.13"
+        "friendsofphp/php-cs-fixer": "^2.13",
+        "psy/psysh": "@stable"
     }
 }
