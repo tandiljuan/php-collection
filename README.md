@@ -4,6 +4,73 @@ Collection
 PHP library to create custom collections.
 
 
+Usage
+-----
+
+Define a custom collection, extending library's abstract collection and defining the item and offset types
+
+```php
+<?php
+
+class MyCustomCollection extends \Tandiljuan\Collection\AbstractCollection
+{
+    /**
+     * {@inheritdoc}
+     */
+    protected $itemType = '\DateTime';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $offsetType = 'integer';
+}
+```
+
+Create a collection that only will allow the item and offset types you have defined
+
+```php
+<?php
+
+$collection = new MyCustomCollection();
+
+try {
+    $collection[] = 'error';
+} catch (\Tandiljuan\Collection\Exception\InvalidItemType $e) {
+    echo "Invalid item type\n";
+}
+
+try {
+    $collection['a'] = new \DateTime();
+} catch (\Tandiljuan\Collection\Exception\InvalidOffsetType $e) {
+    echo "Invalid offset type\n";
+}
+
+$collection[] = new DateTime('2001-01-01 01:01:01');
+$collection[] = new DateTime('2002-02-02 02:02:02');
+$collection[] = new DateTime('2003-03-03 03:03:03');
+```
+
+Require parameters to be of _MyCustomCollection_ using [type declarations](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration)
+
+```php
+<?php
+
+function printItems(MyCustomCollection $parameter)
+{
+    foreach ($parameter as $item) {
+        echo $item->format('r')."\n";
+    }
+}
+
+printItems($collection);
+
+// The output will be
+// Mon, 01 Jan 2001 01:01:01 +0000
+// Sat, 02 Feb 2002 02:02:02 +0000
+// Mon, 03 Mar 2003 03:03:03 +0000
+```
+
+
 Development
 -----------
 
