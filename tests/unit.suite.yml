@@ -1,4 +1,5 @@
 actor: UnitTester
 modules:
     enabled:
+        - Asserts
         - \Tandiljuan\Collection\Tests\Helper\Unit
